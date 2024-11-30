@@ -19,7 +19,7 @@ MODELS = [
     "gpt-4o"
 ]
 
-def run_inference(model, query, temperature, max_tokens):
+def run_inference(model,query):
     """Run inference on selected model"""
     client = ChatCompletionsClient(
         endpoint="https://models.inference.ai.azure.com",
@@ -33,8 +33,8 @@ def run_inference(model, query, temperature, max_tokens):
                 UserMessage(content=query),
             ],
             model=model,
-            temperature=temperature,
-            max_tokens=max_tokens,
+            temperature=1,
+            max_tokens=2048,
             top_p=0.1
         )
         return response.choices[0].message.content
@@ -42,19 +42,17 @@ def run_inference(model, query, temperature, max_tokens):
         return f"Error: {str(e)}"
 
 def gradio_interface():
-    with gr.Blocks() as demo:
+    with gr.Blocks() as demo:    
+        query_input = gr.Textbox(label="Enter your query")
+        output = gr.Textbox(label="Model Response")
+        submit_btn = gr.Button("Generate Response")
         with gr.Row():
             model_dropdown = gr.Dropdown(MODELS, label="Select Model")
-            temperature_slider = gr.Slider(0, 1, value=0.8, label="Temperature")
-            max_tokens_slider = gr.Slider(64, 4096, value=2048, label="Max Tokens")
         
-        query_input = gr.Textbox(label="Enter your query")
-        submit_btn = gr.Button("Generate Response")
-        output = gr.Textbox(label="Model Response")
 
         submit_btn.click(
             fn=run_inference,
-            inputs=[model_dropdown, query_input, temperature_slider, max_tokens_slider],
+            inputs=[model_dropdown, query_input],
             outputs=output
         )
 
