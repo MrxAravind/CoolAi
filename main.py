@@ -62,7 +62,7 @@ def gradio_interface():
 
 def main():
     demo = gradio_interface()
-    demo.launch(server_port=80)
-
+    demo.launch(server_name='0.0.0.0', server_port=80)  
+    
 if __name__ == "__main__":
     main()
