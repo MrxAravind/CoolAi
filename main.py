@@ -4,6 +4,10 @@ from azure.ai.inference import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 
+
+GitHub = os.getenv('Token') 
+
+
 # List of available models
 MODELS = [
     "Meta-Llama-3-8B-Instruct",
